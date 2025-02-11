@@ -139,6 +139,7 @@ void delend()
         pfirst = NULL;
     }
     else
+
     {
         pthis = pfirst;
         while (pthis->next->next != NULL)
