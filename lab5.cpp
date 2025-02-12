@@ -1,4 +1,4 @@
-// singly linear linked list
+// singly circular linked list
 #include <iostream>
 #include <cstring>
 #include <stdlib.h>
@@ -9,45 +9,45 @@ struct node
     int info;
     struct node *next;
 };
-struct node *pfirst = NULL, *pnew, *pthis, *ptemp;
+struct node *pfirst = NULL, *pnew, *pthis, *ptemp, *plast;
 void create()
 {
-    // int data;
     pnew = (struct node *)malloc(sizeof(struct node));
     cout << "enter data";
     cin >> pnew->info;
     num = num + 1;
 }
-void insbg()
+void insbg() // insertion form beginning
 {
     if (pfirst == NULL)
     {
         pfirst = pnew;
-        pnew->next = NULL;
+        plast = pnew;
+        plast->next = pfirst;
     }
     else
     {
         pnew->next = pfirst;
         pfirst = pnew;
+        plast->next = pfirst;
     }
 }
-void insend()
+void insend() // insertion from end
 {
     if (pfirst == NULL)
     {
         pfirst = pnew;
+        plast = pnew;
+        plast->next = pfirst;
     }
     else
     {
-        pthis = pfirst;
-        while (pthis->next != NULL)
-        {
-            pthis = pthis->next;
-        }
-        pthis->next = pnew;
+        plast->next = pnew;
+        plast = pnew;
+        plast->next = pfirst;
     }
 }
-void insbf()
+void insbf() // insertion before location
 {
     int loc;
     cout << "enter location:";
@@ -55,6 +55,10 @@ void insbf()
     if (loc == 1)
     {
         insbg();
+    }
+    else if (loc == 0)
+    {
+        cout << "Invalid location" << endl;
     }
     else
     {
@@ -77,6 +81,10 @@ void insaf()
     {
         insend();
     }
+    else if (loc == 0)
+    {
+        cout << "Invalid location" << endl;
+    }
     else
     {
         pthis = pfirst;
@@ -98,11 +106,12 @@ void display()
     else
     {
         pthis = pfirst;
-        while (pthis != NULL)
+        while (pthis->next != pfirst)
         {
             cout << pthis->info << endl;
             pthis = pthis->next;
         }
+        cout << pthis->info << endl;
     }
 }
 void delbg()
@@ -111,11 +120,12 @@ void delbg()
     {
         cout << "list empty" << endl;
     }
-    else if (pfirst->next == NULL)
+    else if (pfirst == plast)
     {
         cout << "Deleted item is:" << pfirst->info << endl;
         free(pfirst);
         pfirst = NULL;
+        plast = NULL;
     }
     else
     {
@@ -123,6 +133,7 @@ void delbg()
         cout << "Deleted item is:" << pfirst->info << endl;
         free(pfirst);
         pfirst = ptemp;
+        plast->next = pfirst;
     }
     num = num - 1;
 }
@@ -132,22 +143,24 @@ void delend()
     {
         cout << "list empty" << endl;
     }
-    else if (pfirst->next == NULL)
+    else if (pfirst == plast)
     {
         cout << "Deleted item is:" << pfirst->info << endl;
         free(pfirst);
         pfirst = NULL;
+        plast = NULL;
     }
     else
     {
         pthis = pfirst;
-        while (pthis->next->next != NULL)
+        while (pthis->next != plast)
         {
             pthis = pthis->next;
         }
-        cout << "Deleted item is:" << pthis->next->info << endl;
-        free(pthis->next);
-        pthis->next = NULL;
+        cout << "Deleted item is:" << plast->info << endl;
+        free(plast);
+        plast = pthis;
+        plast->next = pfirst;
         num = num - 1;
     }
 }
@@ -159,6 +172,10 @@ void delsp()
     if (loc == 1)
     {
         delbg();
+    }
+    else if (loc == 0)
+    {
+        cout << "Invalid location" << endl;
     }
     else if (loc == num)
     {
