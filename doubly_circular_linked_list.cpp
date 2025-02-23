@@ -30,6 +30,7 @@ void insbg() // insertion from beginning
     else
     {
         ptemp = head->next;
+        head->next = pnew;
         pnew->prev = head;
         pnew->next = ptemp;
         ptemp->prev = pnew;
@@ -62,6 +63,13 @@ void insbf() // insertion before location
     {
         cout << "Invalid Location" << endl;
     }
+    else if (head->next == head)
+    {
+        head->next = pnew;
+        pnew->prev = head;
+        pnew->next = head;
+        head->prev = pnew;
+    }
     else if (loc == 1)
     {
         insbg();
@@ -69,7 +77,7 @@ void insbf() // insertion before location
     else
     {
         pthis = head->next;
-        for (int i = 1; i < loc - 1; i++)
+        for (int i = 1; i <= loc - 1; i++)
         {
             pthis = pthis->next;
         }
@@ -96,7 +104,7 @@ void insaf() // insertion after location
     else
     {
         pthis = head->next;
-        for (int i = 1; i <= loc; i++)
+        for (int i = 1; i < loc; i++)
         {
             pthis = pthis->next;
         }
@@ -116,7 +124,7 @@ void delbg() // deletion from beginning
     else
     {
         ptemp = head->next->next;
-        cout << "Deleted item is " << head->next << endl;
+        cout << "Deleted item is " << head->next->info << endl;
         free(head->next);
         head->next = ptemp;
         ptemp->prev = head;
@@ -132,7 +140,7 @@ void delend() // deletion from end
     else
     {
         ptemp = head->prev->prev;
-        cout << "Deleted item is " << head->prev << endl;
+        cout << "Deleted item is " << head->prev->info << endl;
         free(head->prev);
         head->prev = ptemp;
         ptemp->next = head;
@@ -165,7 +173,7 @@ void delsp() // deletion from specific position
         }
         ptemp1 = pthis->next;
         ptemp = pthis->prev;
-        cout << "Deleted item is " << pthis << endl;
+        cout << "Deleted item is " << pthis->info << endl;
         free(pthis);
         ptemp->next = ptemp1;
         ptemp1->prev = ptemp;
@@ -183,13 +191,14 @@ void display()
         pthis = head->next;
         while (pthis != head)
         {
-            pthis = pthis->next;
             cout << pthis->info << endl;
+            pthis = pthis->next;
         }
     }
 }
 int main()
 {
+    head = (struct node *)malloc(sizeof(struct node));
     head->next = head;
     head->prev = head;
     head->info = 0;
